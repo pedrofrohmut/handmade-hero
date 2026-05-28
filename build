@@ -4,10 +4,18 @@ local host = io.popen("uname -s"):read("*l")
 
 print("Host: " .. host)
 
-local cmd
+local GLFW_DIR = "deps/glfw-3.4"
 
-local build_for_linux =
-   "g++ -Wall -Wextra -g -O0 -o handmade_hero code/win32_handmade.cpp"
+local build_for_linux = table.concat({
+   "g++ -Wall -Wextra -g -O0 --std=c++17",
+   "-I ./"..GLFW_DIR.."/include",
+   "-o handmade_hero",
+   "code/win32_handmade.cpp",
+   GLFW_DIR.."/build/src/libglfw3.a",
+   "-lGL -lm",
+}, " ")
+
+local cmd
 
 if host == "Linux" then
    print("Building for linux.")
@@ -17,4 +25,5 @@ else
    os.exit(1)
 end
 
+print("RUNNING: " .. cmd)
 os.execute(cmd)

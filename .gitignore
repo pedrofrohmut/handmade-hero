@@ -1,1 +1,6 @@
+# executable
 *.exe
+handmade_hero
+
+# dependencies
+deps/
