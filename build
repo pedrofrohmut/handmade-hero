@@ -1,30 +1,20 @@
-#!/usr/bin/env lua
-
---[[
-   Usage:
-
-   to compile with auto detect: ./build
-   if you want to choose one pass in the env FORCE_WINDOWS or FORCE_LINUX
-]]
+#! /usr/bin/env lua
 
 local host = io.popen("uname -s"):read("*l")
-local force_windows = os.getenv("FORCE_WINDOWS")
-local force_linux = os.getenv("FORCE_LINUX")
 
-local win_cmd = "g++ code/win32_handmade.cpp -O0 -g -o handmade_hero_win32.exe -static -mwindows"
-
--- local linux_cmd = "x86_64-w64-mingw32-g++ -Wall -Wextra -O0 -ggdb code/win32_handmade.cpp -o handmade_hero_linux.exe -static -mwindows"
-local linux_cmd = "x86_64-w64-mingw32-g++ -O0 -g code/win32_handmade.cpp -o handmade_hero_linux.exe -static -mwindows"
+print("Host: " .. host)
 
 local cmd
-if force_windows or host:match("Windows") or host:match("MINGW") or host:match("MSYS") then
-   print("Compiling in windows with g++")
-   cmd = win_cmd
-elseif force_linux or host == "Linux" then
-   cmd = linux_cmd
-   print("Compiling in linux with mingw")
+
+local build_for_linux =
+   "g++ -Wall -Wextra -g -O0 -o handmade_hero code/win32_handmade.cpp"
+
+if host == "Linux" then
+   print("Building for linux.")
+   cmd = build_for_linux
 else
-   print("ERROR: Platform not suported - " .. (host or "unknown"))
+   print("This platform is not supported yet.")
    os.exit(1)
 end
+
 os.execute(cmd)

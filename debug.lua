@@ -1,3 +1,3 @@
 return {
-    executable_path = "handmade_hero_linux.exe"
+    executable_path = "handmade_hero.exe"
 }
